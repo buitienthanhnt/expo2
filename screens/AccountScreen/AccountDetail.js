@@ -1,12 +1,20 @@
 import React, { Component } from "react";
 import { Button, Text, View } from "react-native";
+import Config from "../../config/Config";
 
 class AccountDetail extends Component {
     constructor(props) {
         super(props);
     }
 
+    getTestData = async function(){
+        const data = await fetch(Config.url+Config.api_request.testJson);
+        const result = await data.json();
+        console.log(result);
+    }
+
     render() {
+        this.getTestData();
         return (
             <View>
                 <Text>account detail</Text>
