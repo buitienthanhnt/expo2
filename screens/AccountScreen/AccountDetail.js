@@ -10,8 +10,8 @@ class AccountDetail extends Component {
         return (
             <View>
                 <Text>account detail</Text>
-                <Button title="to login" onPress={() => {
-                    this.props.navigation.navigate("Login");
+                <Button title="to Detail product" onPress={() => {
+                    this.props.navigation.navigate("ProductScreen", {screen: "Detail"});
                 }}></Button>
 
                 {/* render nhiều phần tử */}

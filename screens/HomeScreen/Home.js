@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, FlatList, TouchableOpacity, Image } from "react-native";
 
-import PageList from "../config/PageList";
+import PageList from "../../config/PageList";
 
 const Home = (props) => {
     const [load, setLoad] = useState(false);
@@ -16,8 +16,8 @@ const Home = (props) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
-                <Text>
+            <View style={{flexDirection: "row", justifyContent: "center", backgroundColor: "green" }}>
+                <Text style={{fontSize: 18, fontWeight: "700", color: "violet"}}>
                     home screen
                 </Text>
             </View>
@@ -48,8 +48,6 @@ const Home = (props) => {
                     }}
 
                 ></FlatList>
-            </View>
-            <View style={{ flex: 1 }}>
             </View>
         </View>
     )
