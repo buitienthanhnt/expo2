@@ -3,10 +3,10 @@ const Config = (path = "", params = null) => {
         domain: "",
         http: "http://",
         https: "https://",
-        ip: "192.168.1.153/",
-        uri: "laravel1/public/index.php/",
+        ip: "192.168.100.210/",            // 192.168.100.210(jm-destop) || 192.168.1.153(m4700-mochi)
+        uri: "newpaper/public/index.php/", // newpaper/public/index.php(jm-destop)  laravel1/public/index.php(m4700-mochi)
         api_request: {
-            testJson: "testJson"
+            getpapers: "api/getpapers"
         },
         buy_params: function (params) {
             var values = "?";

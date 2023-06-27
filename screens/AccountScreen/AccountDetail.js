@@ -1,34 +1,59 @@
 import React, { Component } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Text, View, Image } from "react-native";
 import Config from "../../config/Config";
 
 class AccountDetail extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            page: 1,
+            items: []
+        };
     }
 
-    getTestData = async function(){
-        const data = await fetch(Config.url+Config.api_request.testJson);
+    getTestData = async function () {
+        // console.log(Config.url + Config.api_request.getpapers + Config.buy_params({ page: this.state.page }));
+        const data = await fetch(Config.url + Config.api_request.getpapers + Config.buy_params({ page: this.state.page }));
         const result = await data.json();
-        console.log(result);
+        // console.log(result);
+        this.setState({
+            items: result.data,
+            page: this.state.page += 1
+        })
     }
 
     render() {
-        this.getTestData();
+        // this.getTestData();
         return (
             <View>
                 <Text>account detail</Text>
                 <Button title="to Detail product" onPress={() => {
-                    this.props.navigation.navigate("ProductScreen", {screen: "Detail"});
+                    this.props.navigation.navigate("ProductScreen", { screen: "Detail" });
                 }}></Button>
 
                 {/* render nhiều phần tử */}
                 {(() => {
-                    var res = [];
-                    for (let index = 0; index < 6; index++) {
-                        res.push(<Text key={index} >123</Text>);
+                    if (this.state.items) {
+                        var res = [];
+                        for (let index = 0; index < this.state.items.length; index++) {
+                            res.push(
+                                <View  key={index}>
+                                    <View style={{ flexDirection: "row" }}>
+                                        <>
+                                            <Image source={{ uri: this.state.items[index].image_path }} style={{ width: 120, height: 120 }} resizeMode="cover"></Image>
+                                        </>
+                                        <>
+                                            <Text>{this.state.items[index].title}</Text>
+                                        </>
+                                    </View>
+                                   <View style={{height:1, backgroundColor: "blue", margin: 6}}></View>
+                                </View>
+                            );
+                        }
+                        return res;
+                    } else {
+                        return (<></>)
                     }
-                    return res;
                 })()}
 
                 {/* render có điều kiện */}
@@ -48,6 +73,13 @@ class AccountDetail extends Component {
                         this.props.navigation.navigate("Product");
                     }}></Button>
                 </>
+
+                <Text>{"\n"}</Text>
+                <Button title="load more" onPress={
+                    () => {
+                        this.getTestData();
+                    }
+                }></Button>
             </View>
         );
     }
