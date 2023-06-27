@@ -4,8 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"; // npm
 import { Ionicons } from '@expo/vector-icons';                            // chạy được cả trên web và android. xem icon: https://icons.expo.fyi || install: npm i @expo/vector-icons
 
 import AccountScreen from "./tabs/AccountScreen";
-import HomeScreen from "./tabs/HomeScreen";
-import ProductScreen from "./tabs/ProductScreen";
+import HomeScreen    from "./tabs/HomeScreen";
+import PaperScreen   from "./tabs/PaperScreen";
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = ({props, route})=>{
@@ -28,9 +28,9 @@ const BottomTabs = ({props, route})=>{
                 }}
             />
 
-            <Tab.Screen name="ProductScreen" component={ProductScreen}
+            <Tab.Screen name="PaperScreen" component={PaperScreen}
                 options={{
-                    tabBarLabel: 'Products',
+                    tabBarLabel: 'Papers',
                     tabBarIcon: ({ focused, color, size }) => <Ionicons name={focused ? 'bug' : 'list'} size={26} color={color} />
                 }}
             />

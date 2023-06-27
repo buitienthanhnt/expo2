@@ -1,88 +1,106 @@
-import React, { Component } from "react";
-import { Button, Text, View, Image } from "react-native";
-import Config from "../../config/Config";
+import React, { useRef, useState } from "react"; // gán lại giá trị mà không render lại đối tượng. https://www.w3schools.com/react/react_useref.asp
+import { Button, Image, Text, View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 
-class AccountDetail extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            page: 1,
-            items: []
-        };
-    }
+import { Ionicons } from '@expo/vector-icons';
+import RBSheet from "react-native-raw-bottom-sheet";
 
-    getTestData = async function () {
-        // console.log(Config.url + Config.api_request.getpapers + Config.buy_params({ page: this.state.page }));
-        const data = await fetch(Config.url + Config.api_request.getpapers + Config.buy_params({ page: this.state.page }));
-        const result = await data.json();
-        // console.log(result);
-        this.setState({
-            items: result.data,
-            page: this.state.page += 1
-        })
-    }
+const AccountDetail = (props) => {
+    const refRBSheet = useRef();
+    const [state, setState] = useState(0.1);
+    const { width, height } = Dimensions.get("screen");
+    // console.log(width, height);
+    return (
+        <View>
+            <Text>
+                product screen
+            </Text>
+            <Button title="show bottom" onPress={() => {
+                refRBSheet.current.open();
+            }}></Button>
+             <Text>{"\n"}</Text>
 
-    render() {
-        // this.getTestData();
-        return (
-            <View>
-                <Text>account detail</Text>
-                <Button title="to Detail product" onPress={() => {
-                    this.props.navigation.navigate("ProductScreen", { screen: "Detail" });
-                }}></Button>
+            <Button title="to detail" onPress={() => {
+                props.navigation.navigate("Detail");
+            }}></Button>
+            <Text>{"\n"}</Text>
 
-                {/* render nhiều phần tử */}
-                {(() => {
-                    if (this.state.items) {
-                        var res = [];
-                        for (let index = 0; index < this.state.items.length; index++) {
-                            res.push(
-                                <View  key={index}>
-                                    <View style={{ flexDirection: "row" }}>
-                                        <>
-                                            <Image source={{ uri: this.state.items[index].image_path }} style={{ width: 120, height: 120 }} resizeMode="cover"></Image>
-                                        </>
-                                        <>
-                                            <Text>{this.state.items[index].title}</Text>
-                                        </>
-                                    </View>
-                                   <View style={{height:1, backgroundColor: "blue", margin: 6}}></View>
-                                </View>
-                            );
-                        }
-                        return res;
-                    } else {
-                        return (<></>)
-                    }
-                })()}
+            <RBSheet ref={refRBSheet}
+                //  height = {height/2}    // chiều cao popup modal
+                closeOnDragDown={true} // kéo xuống để ẩn popup modal
+            >
+                {/* <View style={{flexDirection:row, padding: 8, justifyContent: "space-between"}}></View> */}
+                <ScrollView style={{ padding: 8 }}
+                    horizontal={true}                      // hiển thị theo chiều ngang
+                    pagingEnabled={true}                   // lật trang
+                    showsHorizontalScrollIndicator={false} // ẩn thanh scollBar
+                    // scrollEventThrottle={1000}          // sau 1s call: onScroll
+                    onScroll={(event) => {
+                        // console.log(event.nativeEvent.contentOffset);  // tọa độ x và y khi scroll
+                    }}
+                >
+                    <View style={{ marginRight: 8 }}>
+                        <TouchableOpacity onPress={() => {
+                            console.log(123);
+                        }}>
+                            <Image source={{ uri: "https://sohanews.sohacdn.com/thumb_w/1000/160588918557773824/2023/6/20/4-1687283405506869800315.jpg" }} style={{ width: 60, height: 60, borderRadius: 30 }} resizeMode="cover"></Image>
+                        </TouchableOpacity>
+                    </View>
 
-                {/* render có điều kiện */}
-                {false && <Text>eeeeee</Text>}
+                    <View style={{ marginRight: 8 }}>
+                        <TouchableOpacity>
+                            <Image source={{ uri: "https://sohanews.sohacdn.com/thumb_w/980/160588918557773824/2023/6/21/6-thi-xa-phu-my-16873146381691226222198.jpg" }} style={{ width: 60, height: 60, borderRadius: 30 }} resizeMode="cover"></Image>
+                        </TouchableOpacity>
+                    </View>
 
-                {/* render thường */}
-                {<Text>bbbb</Text>}
+                    <View style={{ marginRight: 8 }}>
+                        <TouchableOpacity>
+                            <Image source={{ uri: "https://sohanews.sohacdn.com/thumb_w/1000/160588918557773824/2023/6/20/photo-2-1687283382097520843048.jpg" }} style={{ width: 60, height: 60, borderRadius: 30 }} resizeMode="cover"></Image>
+                        </TouchableOpacity>
+                    </View>
 
-                {/* render với 1 thẻ cha trống */}
-                <>
-                    <Text>zxc</Text>
-                    <Text>ppppppppp</Text>
-                </>
+                    <View style={{ marginRight: 8 }}>
+                        <TouchableOpacity onPress={() => {
+                            console.log(123);
+                        }}>
+                            <Image source={{ uri: "https://sohanews.sohacdn.com/thumb_w/1000/160588918557773824/2023/6/20/4-1687283405506869800315.jpg" }} style={{ width: 60, height: 60, borderRadius: 30 }} resizeMode="cover"></Image>
+                        </TouchableOpacity>
+                    </View>
 
-                <>
-                    <Button title="to Product" onPress={() => {
-                        this.props.navigation.navigate("Product");
-                    }}></Button>
-                </>
+                    <View style={{ marginRight: 8 }}>
+                        <TouchableOpacity>
+                            <Image source={{ uri: "https://sohanews.sohacdn.com/thumb_w/980/160588918557773824/2023/6/21/6-thi-xa-phu-my-16873146381691226222198.jpg" }} style={{ width: 60, height: 60, borderRadius: 30 }} resizeMode="cover"></Image>
+                        </TouchableOpacity>
+                    </View>
 
-                <Text>{"\n"}</Text>
-                <Button title="load more" onPress={
-                    () => {
-                        this.getTestData();
-                    }
-                }></Button>
-            </View>
-        );
-    }
+                    <View style={{ marginRight: 8 }}>
+                        <TouchableOpacity>
+                            <Image source={{ uri: "https://sohanews.sohacdn.com/thumb_w/1000/160588918557773824/2023/6/20/photo-2-1687283382097520843048.jpg" }} style={{ width: 60, height: 60, borderRadius: 30 }} resizeMode="cover"></Image>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ marginRight: 8 }}>
+                        <TouchableOpacity onPress={() => {
+                            console.log(123);
+                        }}>
+                            <Image source={{ uri: "https://sohanews.sohacdn.com/thumb_w/1000/160588918557773824/2023/6/20/4-1687283405506869800315.jpg" }} style={{ width: 60, height: 60, borderRadius: 30 }} resizeMode="cover"></Image>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ marginRight: 8 }}>
+                        <TouchableOpacity>
+                            <Image source={{ uri: "https://sohanews.sohacdn.com/thumb_w/980/160588918557773824/2023/6/21/6-thi-xa-phu-my-16873146381691226222198.jpg" }} style={{ width: 60, height: 60, borderRadius: 30 }} resizeMode="cover"></Image>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ marginRight: 8 }}>
+                        <TouchableOpacity>
+                            <Image source={{ uri: "https://sohanews.sohacdn.com/thumb_w/1000/160588918557773824/2023/6/20/photo-2-1687283382097520843048.jpg" }} style={{ width: 60, height: 60, borderRadius: 30 }} resizeMode="cover"></Image>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </RBSheet>
+        </View>
+    )
 }
 
 export default AccountDetail;
