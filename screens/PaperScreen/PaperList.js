@@ -17,23 +17,30 @@ class PaperList extends Component {
         this.getTestData();
     }
 
-    getTestData = async function () {
-        // console.log(Config.url + Config.api_request.getpapers + Config.buy_params({ page: this.state.page }));
-        const data = await fetch(Config.url + Config.api_request.getpapers + Config.buy_params({ page: this.state.page }));
-        const result = await data.json();
-        // console.log(result);
-        var items = this.state.items;
-        if (result.data.length) {
-            items.push(...result.data)
-            this.setState({
-                items: items,
-                page: this.state.page += 1,
-                refreshing: false
-            });
-        } else {
-            this.setState({
-                refreshing: false
-            });
+    getTestData = async function (paper = false, refresh = false) {
+        if (!this.state.refreshing) {
+            this.setState({refreshing: true});
+            // console.log(Config.url + Config.api_request.getpapers + Config.buy_params({ page: this.state.page }));
+            const data = await fetch(Config.url + Config.api_request.getpapers + Config.buy_params({ page: paper !== false ? paper : this.state.page }));
+            const result = await data.json();
+            // console.log(result);
+            var items = this.state.items;
+            if (result.data.length) {
+                if (refresh) {
+                    items = result.data;
+                }else{
+                    items.push(...result.data)
+                }
+                await this.setState({
+                    items: items,
+                    page: this.state.page += 1,
+                    refreshing: false
+                });
+            } else {
+                this.setState({
+                    refreshing: false
+                });
+            }
         }
     }
 
@@ -57,7 +64,7 @@ class PaperList extends Component {
                         this.setState({
                             refreshing: true
                         })
-                        this.getTestData();
+                        this.getTestData(1, true);
                     }}
                     keyExtractor={(item) => item.id}
                     showsVerticalScrollIndicator={false}
@@ -87,13 +94,13 @@ class ProductItem extends Component {
     }
     render() {
         return (
-            <TouchableOpacity onPress={()=>{
-                this.props.navigation.navigate("PaperDetail", {data: this.props.data});
+            <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate("PaperDetail", { data: this.props.data });
             }}
             >
                 <View style={css.pro_item}>
                     <View style={{ width: "40%" }}>
-                        <Image source={{ uri: this.props.data.image_path }} style={{ flex: 1, borderRadius: 6 }}></Image>
+                        <Image source={{ uri: this.props.data.image_path}} style={{ flex: 1, borderRadius: 6 }}></Image>
                     </View>
                     <View style={css.pro_item_title}>
                         <Text style={{ color: "green", fontSize: 16 }}>{this.props.data.title}</Text>

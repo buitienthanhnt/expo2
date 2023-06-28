@@ -33,3 +33,6 @@ const Config = (path = "", params = null) => {
 
 
 export default Config();
+
+// https://github.com/ant-design/ant-design-mobile-rn
+// http://rn.mobile.ant.design/docs/react/introduce
