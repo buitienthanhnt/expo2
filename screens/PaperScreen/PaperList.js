@@ -1,5 +1,5 @@
 import react, { Component } from "react";
-import { FlatList, StyleSheet, View, Dimensions, Image, Text, TouchableOpacity } from "react-native";
+import { FlatList, StyleSheet, View, Dimensions, Image, Text, TouchableOpacity, LogBox } from "react-native";
 
 import Config from "../../config/Config";
 
@@ -15,6 +15,9 @@ class PaperList extends Component {
 
     componentDidMount() {
         this.getTestData();
+        // tắt cảnh báo màu vàng trên màn hình dùng: LogBox.
+        LogBox.ignoreAllLogs();
+        // LogBox.ignoreLogs(["Failed %s type: %s%s, prop, Invalid prop `color` supplied to `Text`", 'The "source" tag is a valid HTML element but is not handled by this library']);
     }
 
     getTestData = async function (paper = false, refresh = false) {
@@ -23,7 +26,6 @@ class PaperList extends Component {
             // console.log(Config.url + Config.api_request.getpapers + Config.buy_params({ page: this.state.page }));
             const data = await fetch(Config.url + Config.api_request.getpapers + Config.buy_params({ page: paper !== false ? paper : this.state.page }));
             const result = await data.json();
-            // console.log(result);
             var items = this.state.items;
             if (result.data.length) {
                 if (refresh) {
@@ -33,7 +35,7 @@ class PaperList extends Component {
                 }
                 await this.setState({
                     items: items,
-                    page: this.state.page += 1,
+                    page: refresh ? 2 : this.state.page += 1,
                     refreshing: false
                 });
             } else {
@@ -46,24 +48,23 @@ class PaperList extends Component {
 
     componentDidUpdate() {
         var items_count = this.state.items.length;
-        if (items_count * Dimensions.get("screen").height / 7 < Dimensions.get("screen").height) {
+        if (!this.state.refreshing && (items_count * Dimensions.get("screen").height / 7 < Dimensions.get("screen").height)) {
             this.getTestData();
         }
     }
 
     render() { // https://viblo.asia/p/react-native-lifecycle-gAm5yXY8ldb
+        const height = Dimensions.get("screen").height;
         return (
             <View style={css.container}>
                 <View style={css.title_container}>
-                    <Text style={css.top_title}>Paper list</Text>
+                    {/* <Text style={css.top_title}>Paper list</Text> */}
+                    <Image source={require("../../assets/hinh-ke-ga-3307-1684226630.jpg")} style={css.top_image} resizeMode="cover"></Image>
                 </View>
                 <FlatList
                     data={this.state.items}
                     refreshing={this.state.refreshing}
                     onRefresh={() => {
-                        this.setState({
-                            refreshing: true
-                        })
                         this.getTestData(1, true);
                     }}
                     keyExtractor={(item) => item.id}
@@ -74,9 +75,6 @@ class PaperList extends Component {
                     }}
                     onEndReachedThreshold={0.1}
                     onEndReached={() => {
-                        this.setState({
-                            refreshing: true
-                        })
                         this.getTestData();
                     }}
                 ></FlatList>
@@ -126,11 +124,16 @@ const css = StyleSheet.create({
         fontWeight: "700",
         color: "green"
     },
+    top_image:{
+        width: "100%", 
+        height: Dimensions.get("screen").height/8
+    },
     pro_item: {
         width: "100%",
         height: Dimensions.get("screen").height / 7,
         flexDirection: "row",
-        padding: 5
+        padding: 5,
+        elevation: 3, //: zindex (works on android)
     },
     pro_item_title: {
         width: "60%",
