@@ -28,12 +28,18 @@ const PaperDetail = ({ navigation, route }) => {
 
     const getDetailPaper = async (paper_id = 0) => {
         if (paper_id) {
-            const detail = await fetch(Config.url + Config.api_request.getPaperDetail + paper_id);
-            console.log(detail);
-            var result = await detail.json();
-            if (result) {
-                setDetail(result);
+            try {
+                const detail = await fetch(Config.url + Config.api_request.getPaperDetail + paper_id);
+                var result = await detail.json();
+                if (result) {
+                    setDetail(result);
+                }else{
+                    navigation.goBack();
+                } 
+            } catch (error) {
+                navigation.goBack();
             }
+            
         }
     };
 
