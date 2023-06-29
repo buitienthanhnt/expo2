@@ -8,8 +8,10 @@ const Config = (path = "", params = null) => {
         ip: "192.168.100.210/",            // 192.168.100.210(jm-destop)
         uri: "newpaper/public/index.php/", // newpaper/public/index.php(jm-destop)
         api_request: {
-            getpapers:      "api/getpapers/",
-            getPaperDetail: "api/getpaperdetail/"
+            getpapers:        "api/getpapers/",
+            getPaperDetail:   "api/getpaperdetail/",
+            getCategoryTop:   "api/getcategorytop/",
+            getPaperCategory: "api/papercategory/"
         },
         buy_params: function (params) {
             var values = "?";

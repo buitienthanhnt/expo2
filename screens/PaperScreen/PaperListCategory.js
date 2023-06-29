@@ -3,19 +3,19 @@ import { FlatList, StyleSheet, View, Dimensions, Image, Text, TouchableOpacity, 
 
 import Config from "../../config/Config";
 
-class PaperList extends Component {
+class PaperListCategory extends Component {
     constructor(props) { // https://viblo.asia/p/superprops-trong-constructor-cua-react-component-gGJ59eA15X2
         super(props);
         this.state = {
             items: [],
             refreshing: false,
             page: 1,
-            topCategory: []
+            end: false
         };
     }
 
     componentDidMount() {
-        this.getCategoryTop();
+        // console.log(this.props);
         this.getSourceData();
         // tắt cảnh báo màu vàng trên màn hình dùng: LogBox.
         LogBox.ignoreAllLogs(); // cho tất cả các cảnh báo.
@@ -25,15 +25,16 @@ class PaperList extends Component {
     getSourceData = async function (paper = false, refresh = false) {
         if (!this.state.refreshing) {
             this.setState({ refreshing: true });
-            // console.log(Config.url + Config.api_request.getpapers + Config.buy_params({ page: this.state.page }));
-            const data = await fetch(Config.url + Config.api_request.getpapers + Config.buy_params({ page: paper !== false ? paper : this.state.page }));
+            // console.log(Config.url + Config.api_request.getPaperCategory + this.props.route.params.category_id + Config.buy_params({ page: paper !== false ? paper : this.state.page }));
+            const data = await fetch(Config.url + Config.api_request.getPaperCategory + this.props.route.params.category_id + Config.buy_params({ page: paper !== false ? paper : this.state.page }));
             const result = await data.json();
+            // console.log(result);
             var items = this.state.items;
-            if (result.data.length) {
+            if (result.length) {
                 if (refresh) {
-                    items = result.data;
+                    items = result;
                 } else {
-                    items.push(...result.data)
+                    items.push(...result)
                 }
                 await this.setState({
                     items: items,
@@ -42,23 +43,16 @@ class PaperList extends Component {
                 });
             } else {
                 this.setState({
-                    refreshing: false
+                    refreshing: false,
+                    end: true
                 });
             }
         }
     }
 
-    getCategoryTop = async () => {
-        const data = await fetch(Config.url + Config.api_request.getCategoryTop);
-        const result = await data.json();
-        this.setState({
-            topCategory: result
-        })
-    }
-
     componentDidUpdate() {
         var items_count = this.state.items.length;
-        if (!this.state.refreshing && (items_count * Dimensions.get("screen").height / 7 < Dimensions.get("screen").height)) {
+        if (!this.state.refreshing && !this.state.end && (items_count * Dimensions.get("screen").height / 7 < Dimensions.get("screen").height)) {
             this.getSourceData();
         }
     }
@@ -68,36 +62,6 @@ class PaperList extends Component {
         const width = Dimensions.get("screen").width;
         return (
             <View style={css.container}>
-                <View >
-                    <ScrollView
-                        pagingEnabled={true}
-                        showsHorizontalScrollIndicator={false}
-                        horizontal={true}
-                    >
-                        {this.state.topCategory && this.state.topCategory.map((item, index) => {
-                            return (
-                                <View key={item.id} style={css.title_container}>
-                                    <TouchableOpacity onPress={()=>{
-                                        this.props.navigation.navigate("PaperListCategory", {category_id: item.id})
-                                    }}>
-                                        <View style={{ flexDirection: "row", justifyContent: "center" }}><Text style={{ fontSize: 18, fontWeight: "600" }}>{item.name}</Text></View>
-                                        <Image source={{ uri: item.image_path }} style={css.top_image} resizeMode="cover"></Image>
-                                    </TouchableOpacity>
-                                </View>
-                            )
-                        })}
-                        <View style={css.title_container}>
-                            <View style={{ flexDirection: "row", justifyContent: "center" }}><Text style={{ fontSize: 18, fontWeight: "600" }}>News</Text></View>
-                            <Image source={require("../../assets/hinh-ke-ga-3307-1684226630.jpg")} style={css.top_image} resizeMode="cover"></Image>
-                        </View>
-                        <View style={css.title_container}>
-                            <View style={{ flexDirection: "row", justifyContent: "center" }}><Text style={{ fontSize: 18, fontWeight: "600" }}>Chiến sự</Text></View>
-                            <Image source={require("../../assets/6623ThuydienLaiChau1_1.jpg")} style={css.top_image} resizeMode="cover"></Image>
-
-                        </View>
-                    </ScrollView>
-                </View>
-
                 <FlatList
 
                     data={this.state.items}
@@ -218,4 +182,4 @@ const css = StyleSheet.create({
     }
 });
 
-export default PaperList;
+export default PaperListCategory;
