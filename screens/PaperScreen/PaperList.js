@@ -57,43 +57,46 @@ class PaperList extends Component {
         const height = Dimensions.get("screen").height;
         return (
             <View style={css.container}>
-                <View style={{ flex: 3 }}>
-                <ScrollView  pagingEnabled={true} showsHorizontalScrollIndicator={false} horizontal={true}>
-                    <View style={css.title_container}>
-                        <View style={{ flexDirection: "row", justifyContent: "center" }}><Text style={{ fontSize: 18, fontWeight: "600" }}>News</Text></View>
-                        <Image source={require("../../assets/hinh-ke-ga-3307-1684226630.jpg")} style={css.top_image} resizeMode="cover"></Image>
-                    </View>
-                    <View style={css.title_container}>
-                        <View style={{ flexDirection: "row", justifyContent: "center" }}><Text style={{ fontSize: 18, fontWeight: "600" }}>Chiến sự</Text></View>
-                        <Image source={require("../../assets/6623ThuydienLaiChau1_1.jpg")} style={css.top_image} resizeMode="cover"></Image>
+                <View >
+                    <ScrollView pagingEnabled={true} showsHorizontalScrollIndicator={false} horizontal={true}>
+                        <View style={css.title_container}>
+                            <View style={{ flexDirection: "row", justifyContent: "center" }}><Text style={{ fontSize: 18, fontWeight: "600" }}>News</Text></View>
+                            <Image source={require("../../assets/hinh-ke-ga-3307-1684226630.jpg")} style={css.top_image} resizeMode="cover"></Image>
+                        </View>
+                        <View style={css.title_container}>
+                            <View style={{ flexDirection: "row", justifyContent: "center" }}><Text style={{ fontSize: 18, fontWeight: "600" }}>Chiến sự</Text></View>
+                            <Image source={require("../../assets/6623ThuydienLaiChau1_1.jpg")} style={css.top_image} resizeMode="cover"></Image>
 
-                    </View>
-                </ScrollView>
+                        </View>
+                        <View style={css.title_container}>
+                            <View style={{ flexDirection: "row", justifyContent: "center" }}><Text style={{ fontSize: 18, fontWeight: "600" }}>Trong nước</Text></View>
+                            <Image source={require("../../assets/hinh-ke-ga-3307-1684226630.jpg")} style={css.top_image} resizeMode="cover"></Image>
+                        </View>
+                    </ScrollView>
                 </View>
 
-                <View style={{ flex: 9 }}>
-                    <FlatList
+                <FlatList
 
-                        data={this.state.items}
-                        refreshing={this.state.refreshing}
-                        onRefresh={() => {
-                            this.getSourceData(1, true);
-                        }}
-                        keyExtractor={(item) => item.id}
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item, index }) => {
-                            if (index % 5 == 0) {
-                                return <ProductItemHost data={item} navigation={this.props.navigation}></ProductItemHost>
-                            }
-                            return <ProductItem data={item} navigation={this.props.navigation}></ProductItem>;
-                        }}
-                        onEndReachedThreshold={0.1}
-                        onEndReached={() => {
-                            this.getSourceData();
-                        }}
-                    ></FlatList>
-                </View>
+                    data={this.state.items}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => {
+                        this.getSourceData(1, true);
+                    }}
+                    keyExtractor={(item) => item.id}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item, index }) => {
+                        if (index % 5 == 0) {
+                            return <ProductItemHost data={item} navigation={this.props.navigation}></ProductItemHost>
+                        }
+                        return <ProductItem data={item} navigation={this.props.navigation}></ProductItem>;
+                    }}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => {
+                        this.getSourceData();
+                    }}
+                ></FlatList>
+
             </View>
         );
     }
@@ -118,9 +121,9 @@ class ProductItem extends Component {
                     </View>
                     <View style={css.pro_item_title}>
                         <Text style={{ color: "green", fontSize: 16 }}>{this.props.data.title}</Text>
-                        <View style={{ paddingLeft: 5 }}>
-                            <Text>{this.props.data.short_conten ? this.props.data.short_conten.slice(0, 90) : ""}</Text>
-                        </View>
+                        {/* <View style={{ paddingLeft: 5 }}>
+                            <Text>{this.props.data.short_conten ? this.props.data.short_conten : ""}</Text>
+                        </View> */}
                     </View>
                 </View>
             </TouchableOpacity>
