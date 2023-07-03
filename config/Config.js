@@ -13,6 +13,9 @@ const Config = (path = "", params = null) => {
             getCategoryTop:   "api/getcategorytop/",
             getPaperCategory: "api/papercategory/"
         },
+        url_request:{
+            userLogin: "user/login"
+        },
         buy_params: function (params) {
             var values = "?";
             for (const key in params) {

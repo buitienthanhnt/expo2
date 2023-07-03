@@ -44,8 +44,9 @@ const PaperDetail = ({ navigation, route }) => {
     };
 
     const onRefresh = ()=>{
-        alert("refresh");
-        // getDetailPaper(route.params.data.id);
+        // alert("refresh");
+        getDetailPaper(route.params.data.id);
+
     }
 
     if (detail) {
