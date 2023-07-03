@@ -19,8 +19,8 @@ const AccountDetail = (props) => {
             }}></Button>
              <Text>{"\n"}</Text>
 
-            <Button title="to detail" onPress={() => {
-                props.navigation.navigate("Detail");
+            <Button title="to Login" onPress={() => {
+                props.navigation.navigate("Login");
             }}></Button>
             <Text>{"\n"}</Text>
 
